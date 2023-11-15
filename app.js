@@ -12,7 +12,35 @@ app.set("view engine", ".hbs");
 app.set("views", "./views");
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.send("hello world");
+});
+
+app.get("/todos", (req, res) => {
+  res.send("get all todos");
+});
+
+app.get("/todos/new", (req, res) => {
+  res.send("create todo");
+});
+
+app.post("/todos", (req, res) => {
+  res.send("add todo");
+});
+
+app.get("/todos/:id", (req, res) => {
+  res.send(`get todo id: ${req.params.id}`);
+});
+
+app.get("/todos/:id/edit", (req, res) => {
+  res.send(`get todo edit id: ${req.params.id}`);
+});
+
+app.put("/todos/:id", (req, res) => {
+  res.send(`todo id: ${req.params.id} has been modified`);
+});
+
+app.delete("/todos/:id", (req, res) => {
+  res.send(`todo id: ${req.params.id} has been deleted`);
 });
 
 app.listen(port, () => {
