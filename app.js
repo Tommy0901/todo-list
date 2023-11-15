@@ -3,6 +3,9 @@ const { engine } = require("express-handlebars");
 const app = express();
 const port = 3000;
 
+const db = require('./models')
+const Todo = db.Todo
+
 app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
@@ -16,7 +19,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/todos", (req, res) => {
-  res.send("get all todos");
+  return Todo.findAll()
+		.then((todos) => res.send({ todos }))
+		.catch((err) => res.status(422).json(err));
 });
 
 app.get("/todos/new", (req, res) => {
