@@ -1,4 +1,5 @@
 <div>
   {{todo.name}}
-  <input type ="button" onclick="history.back()" value="back"></input>
+  <input type ="button" onclick="location.href='/todos'" value="back"></input>
+  <input type ="button" onclick="location.href='/todos/{{todo.id}}/edit'" value="edit"></input>
 </div>

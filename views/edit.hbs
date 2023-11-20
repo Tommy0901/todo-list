@@ -1,0 +1,6 @@
+<form action="/todos/{{todo.id}}?_method=put" method="post"> <!--使用put方法，並導使用者輸入的資料傳遞至Todos/:id頁面-->
+  <input type="text" value="{{todo.name}}" name="editedName" id="">
+  <button type="submit">Save</button>
+</form>
+<p></p>
+<input type ="button" onclick="history.back()" value="back"></input>
