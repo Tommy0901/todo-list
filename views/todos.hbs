@@ -1,0 +1,11 @@
+<button>Create</button>
+<p></p>
+<ul class="list-group">
+    {{#each todos}}
+      <li class="list-group-item rounded-0">
+        {{this.name}}
+      </li>
+    {{/each}}
+</ul>
+<p></p>
+<input type ="button" onclick="history.back()" value="Return to previous page"></input>

@@ -3,9 +3,9 @@ const { engine } = require("express-handlebars");
 const app = express();
 const port = 3000;
 
-const models = require("./models")
-const Todo = models.Todo
-const User = models.User
+const models = require("./models");
+const Todo = models.Todo;
+const User = models.User;
 
 app.use(express.json());
 app.use(express.static("public"));
@@ -16,13 +16,13 @@ app.set("view engine", ".hbs");
 app.set("views", "./views");
 
 app.get("/", (req, res) => {
-  res.send("hello world");
+  res.render("index");
 });
 
 app.get("/todos", async (req, res) => {
   try {
-    const todos = await Todo.findAll();
-    res.send({ todos });
+    const todos = await Todo.findAll({ raw: true, attributes: ["id", "name"] });
+    res.render("todos", { todos });
   } catch {
     res.status(422).json(err);
   }
