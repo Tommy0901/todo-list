@@ -43,15 +43,20 @@ app.get("/todos/new", (req, res) => {
 
 app.post("/todos", async (req, res) => {
   try {
-    await Todo.create({name: req.body.inputName})
+    await Todo.create({ name: req.body.inputName });
     res.redirect("todos");
   } catch {
     res.status(422).json(err);
   }
 });
 
-app.get("/todos/:id", (req, res) => {
-  res.send(`get todo id: ${req.params.id}`);
+app.get("/todos/:id", async (req, res) => {
+  try {
+    const todo = await Todo.findByPk(req.params.id, { raw: true });
+    res.render("todo", { todo });
+  } catch {
+    res.status(422).json(err);
+  }
 });
 
 app.get("/todos/:id/edit", (req, res) => {
