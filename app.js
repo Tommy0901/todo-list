@@ -38,11 +38,16 @@ app.get("/users", async (req, res) => {
 });
 
 app.get("/todos/new", (req, res) => {
-  res.send("create todo");
+  res.render("new");
 });
 
-app.post("/todos", (req, res) => {
-  res.send("add todo");
+app.post("/todos", async (req, res) => {
+  try {
+    await Todo.create({name: req.body.inputName})
+    res.redirect("todos");
+  } catch {
+    res.status(422).json(err);
+  }
 });
 
 app.get("/todos/:id", (req, res) => {

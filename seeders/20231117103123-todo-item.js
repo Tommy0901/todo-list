@@ -6,7 +6,7 @@ module.exports = {
     await queryInterface.bulkInsert(
       "todos",
       Array.from(Array(10)).map((_, i) => ({
-        name: `todo-${i}`,
+        name: `todo-${i + 1}`,
         createdAt: new Date(),
         updatedAt: new Date(),
       }))

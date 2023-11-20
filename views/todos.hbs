@@ -1,11 +1,11 @@
-<button>Create</button>
+<input type ="button" onclick="location.href='/todos/new'" value="Create New Task"></input>
 <p></p>
-<ul class="list-group">
+<ol class="list-group list-group-numbered">
     {{#each todos}}
-      <li class="list-group-item rounded-0">
-        {{this.name}}
+      <li class="list-group-item d-flex rounded-0">
+        <div class="ms-2 me-auto item">
+          {{this.name}}
+        </div>
       </li>
     {{/each}}
-</ul>
-<p></p>
-<input type ="button" onclick="history.back()" value="Return to previous page"></input>
+</ol>
