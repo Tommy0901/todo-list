@@ -8,6 +8,9 @@
         </div>
         <input type ="button" onclick="location.href='/todos/{{this.id}}'" value="detail"></input>
         <input type ="button" onclick="location.href='/todos/{{this.id}}/edit'" value="edit"></input>
+        <form action="/todos/{{this.id}}?_method=delete" method="post" style="display: inline">
+          <button type="submit">delete</button>
+        </form>
       </li>
     {{/each}}
 </ol>

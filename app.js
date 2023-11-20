@@ -81,8 +81,13 @@ app.put("/todos/:id", async (req, res) => {
   };
 });
 
-app.delete("/todos/:id", (req, res) => {
-  res.send(`todo id: ${req.params.id} has been deleted`);
+app.delete("/todos/:id", async (req, res) => {
+  try {
+    await Todo.destroy({where: {id: req.params.id}})
+    res.redirect("/todos")
+  } catch {
+    res.status(422).json(err);
+  };
 });
 
 app.listen(port, () => {

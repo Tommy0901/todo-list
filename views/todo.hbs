@@ -1,5 +1,14 @@
-<div>
-  {{todo.name}}
-  <input type ="button" onclick="location.href='/todos'" value="back"></input>
-  <input type ="button" onclick="location.href='/todos/{{todo.id}}/edit'" value="edit"></input>
-</div>
+<ul class="list-group">
+  <li class="list-group-item d-flex rounded-0 itemWidth">
+    <div class="ms-2 me-auto">
+      {{todo.name}}
+    </div>
+    <div class="d-flex">
+      <input type ="button" onclick="location.href='/todos'" value="back"></input>
+      <input type ="button" onclick="location.href='/todos/{{todo.id}}/edit'" value="edit"></input>
+      <form action="/todos/{{todo.id}}?_method=delete" method="post" style="display: inline">
+        <button type="submit">delete</button>
+      </form>
+    </div>
+  </li>
+</ul>

@@ -1,5 +1,9 @@
 ol {
-  width: 25%;
+  max-width: 800px;
+}
+
+ul {
+  max-width: 800px;
 }
 
 .container {
