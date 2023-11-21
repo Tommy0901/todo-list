@@ -23,7 +23,8 @@ app.get("/", (req, res) => {
 
 app.get("/todos", async (req, res) => {
   try {
-    const todos = await Todo.findAll({ raw: true, attributes: ["id", "name"] });
+    const todos = await Todo.findAll({ raw: true, attributes: ["id", "name", "isComplete"] });
+    console.log(todos);
     res.render("todos", { todos });
   } catch {
     res.status(422).json(err);

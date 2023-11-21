@@ -14,7 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Todo.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    isComplete: { 
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false
+    } // 同 migration 新增 isComplete 欄位，對 db 做 query 才可以找尋相應欄位
   }, {
     sequelize,
     modelName: 'Todo',
