@@ -1,4 +1,6 @@
 const express = require("express");
+const session = require("express-session");
+const flash = require("connect-flash");
 const methodOverride = require("method-override");
 const { engine } = require("express-handlebars");
 const app = express();
@@ -12,6 +14,15 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+
+app.use(
+  session({
+    secret: "ThisIsSecret",
+    resave: "false",
+    saveUninitialized: false,
+  })
+);
+app.use(flash());
 
 app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
@@ -27,7 +38,7 @@ app.get("/todos", async (req, res) => {
       raw: true,
       attributes: ["id", "name", "isComplete"],
     });
-    res.render("todos", { todos });
+    res.render("todos", { todos, message: req.flash("success") });
   } catch {
     res.status(422).json(err);
   }
@@ -50,6 +61,7 @@ app.post("/todos", async (req, res) => {
   try {
     const { inputName: name } = req.body;
     await Todo.create({ name });
+    req.flash("success", "新增成功!");
     res.redirect("todos");
   } catch {
     res.status(422).json(err);
@@ -60,7 +72,7 @@ app.get("/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const todo = await Todo.findByPk(id, { raw: true });
-    res.render("todo", { todo });
+    res.render("todo", { todo, message: req.flash("success") });
   } catch {
     res.status(422).json(err);
   }
@@ -80,7 +92,11 @@ app.put("/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { editedName: name, tickCheckbox: isComplete } = req.body;
-    await Todo.update({ name, isComplete: isComplete === 'done' }, { where: { id } });
+    await Todo.update(
+      { name, isComplete: isComplete === "done" },
+      { where: { id } }
+    );
+    req.flash("success", "更新成功!")
     res.redirect(`/todos/${id}`);
   } catch {
     res.status(422).json(err);
@@ -91,6 +107,7 @@ app.delete("/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
     await Todo.destroy({ where: { id } });
+    req.flash("success", "刪除成功")
     res.redirect("/todos");
   } catch {
     res.status(422).json(err);
