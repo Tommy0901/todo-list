@@ -6,8 +6,21 @@ ul {
   max-width: 800px;
 }
 
+.customized-checkbox {
+  width: 18px;
+  height: 18px;
+  margin-right: 7px;
+  margin-bottom: 7px;
+  vertical-align: bottom;
+}
+
 .container {
   margin-top: 15px;
   margin-left: initial;
   margin-right: initial;
+}
+
+.form-check-input {
+  width: 18px;
+  height: 18px;
 }

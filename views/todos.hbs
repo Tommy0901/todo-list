@@ -1,16 +1,17 @@
 <input type ="button" onclick="location.href='/todos/new'" value="Create New Task"></input>
 <p></p>
-<ol class="list-group list-group-numbered">
+<ul class="list-group">
     {{#each todos}}
       <li class="list-group-item d-flex rounded-0">
+        <input class="form-check-input" type="checkbox" name="" id="" disabled {{#if this.isComplete}} checked {{/if}}>
         <div class="ms-2 me-auto item">
           {{this.name}}
         </div>
-        <input type ="button" onclick="location.href='/todos/{{this.id}}'" value="detail"></input>
         <input type ="button" onclick="location.href='/todos/{{this.id}}/edit'" value="edit"></input>
-        <form action="/todos/{{this.id}}?_method=delete" method="post" style="display: inline">
+        <input type ="button" onclick="location.href='/todos/{{this.id}}'" value="detail" style="margin-left: 5px;"></input>
+        <form action="/todos/{{this.id}}?_method=delete" method="post" style="display: inline; margin-left: 5px;">
           <button type="submit">delete</button>
         </form>
       </li>
     {{/each}}
-</ol>
+</ul>

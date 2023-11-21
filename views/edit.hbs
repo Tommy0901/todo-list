@@ -1,6 +1,6 @@
 <form action="/todos/{{todo.id}}?_method=put" method="post"> <!--使用put方法，並導使用者輸入的資料傳遞至Todos/:id頁面-->
-  <input type="text" value="{{todo.name}}" name="editedName" id="">
-  <button type="submit">Save</button>
+  <input type="text" value="{{todo.name}}" name="editedName" id="" >
+  <input class="form-check-input" type="checkbox" name="tickCheckbox" id="" value="done" style="margin-left: 4px; width: 21px; height: 21px;" {{#if todo.isComplete}} checked {{/if}}>
+  <button type="submit" style="margin-left: 4px;">Save</button>
+  <input type ="button" onclick="history.back()" value="back" id=""></input>
 </form>
-<p></p>
-<input type ="button" onclick="history.back()" value="back"></input>
