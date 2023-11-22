@@ -1,6 +1,9 @@
+{{#if error}}
+<div style="margin-bottom: 5px;">{{error}}</div>
+{{/if}}
 <form action="/todos" method="post"> <!--使用post方法，並導使用者輸入的資料傳遞至Todos頁面-->
   <input type="text" placeholder="please input name" name="inputName" id="">
   <button type="submit">Create</button>
 </form>
 <p></p>
-<input type ="button" onclick="history.back()" value="Previous Page"></input>
+<input type ="button" onclick="location.href='/todos'" value="Previous Page"></input>

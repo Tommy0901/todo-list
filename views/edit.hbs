@@ -2,5 +2,9 @@
   <input type="text" value="{{todo.name}}" name="editedName" id="" >
   <input class="form-check-input" type="checkbox" name="tickCheckbox" id="" value="done" style="margin-left: 4px; width: 21px; height: 21px;" {{#if todo.isComplete}} checked {{/if}}>
   <button type="submit" style="margin-left: 4px;">Save</button>
-  <input type ="button" onclick="history.back()" value="back" id=""></input>
+  <input type ="button" onclick="location.href='/todos'" value="back" id=""></input>
 </form>
+<p></p>
+{{#if error}}
+<div style="margin-left: 5px;margin-top: 5px;">{{error}}</div>
+{{/if}}

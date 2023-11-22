@@ -29,88 +29,178 @@ app.set("view engine", ".hbs");
 app.set("views", "./views");
 
 app.get("/", (req, res) => {
-  res.render("index");
-});
-
-app.get("/todos", async (req, res) => {
   try {
-    const todos = await Todo.findAll({
-      raw: true,
-      attributes: ["id", "name", "isComplete"],
-    });
-    res.render("todos", { todos, message: req.flash("success") });
-  } catch {
-    res.status(422).json(err);
+    res.render("index", { error: req.flash("error") });
+  } catch (error) {
+    console.error(error);
+    req.flash("error", "伺服器錯誤");
+    res.redirect("back");
   }
 });
 
-app.get("/users", async (req, res) => {
+app.get("/todos", (req, res) => {
   try {
-    const users = await User.findAll();
-    res.send({ users });
-  } catch {
-    res.status(422).json(err);
+    (async () => {
+      try {
+        const todos = await Todo.findAll({
+          raw: true,
+          attributes: ["id", "name", "isComplete"],
+        });
+        res.render("todos", {
+          todos,
+          message: req.flash("success"),
+          error: req.flash("error"),
+        });
+      } catch (error) {
+        console.error(error);
+        req.flash("error", "資料取得失敗 :(");
+        res.redirect("back");
+      }
+    })();
+  } catch (error) {
+    console.error(error);
+    req.flash("error", "伺服器錯誤");
+    res.redirect("back");
+  }
+});
+
+app.get("/users", (req, res) => {
+  try {
+    (async () => {
+      try {
+        const users = await User.findAll();
+        res.send({ users });
+      } catch (error) {
+        console.error(error);
+        req.flash("error", "資料取得失敗 :(");
+        res.redirect("back");
+      }
+    })();
+  } catch (error) {
+    console.error(error);
+    req.flash("error", "伺服器錯誤");
+    res.redirect("back");
   }
 });
 
 app.get("/todos/new", (req, res) => {
-  res.render("new");
+  try {
+    res.render("new", { error: req.flash("error") });
+  } catch (error) {
+    console.error(error);
+    req.flash("error", "伺服器錯誤");
+    res.redirect("back");
+  }
 });
 
-app.post("/todos", async (req, res) => {
+app.post("/todos", (req, res) => {
   try {
     const { inputName: name } = req.body;
-    await Todo.create({ name });
-    req.flash("success", "新增成功!");
-    res.redirect("todos");
-  } catch {
-    res.status(422).json(err);
+    (async () => {
+      try {
+        await Todo.create({ name });
+        req.flash("success", "新增成功!");
+        res.redirect("todos");
+      } catch (error) {
+        console.error(error);
+        req.flash("error", "新增失敗 :(");
+        res.redirect("back");
+      }
+    })();
+  } catch (error) {
+    console.error(error);
+    req.flash("error", "伺服器錯誤");
+    res.redirect("back");
   }
 });
 
-app.get("/todos/:id", async (req, res) => {
+app.get("/todos/:id", (req, res) => {
   try {
     const { id } = req.params;
-    const todo = await Todo.findByPk(id, { raw: true });
-    res.render("todo", { todo, message: req.flash("success") });
-  } catch {
-    res.status(422).json(err);
+    (async () => {
+      try {
+        const todo = await Todo.findByPk(id, { raw: true });
+        res.render("todo", {
+          todo,
+          message: req.flash("success"),
+          error: req.flash("error"),
+        });
+      } catch (error) {
+        console.error(error);
+        req.flash("error", "資料取得失敗 :(");
+        res.redirect("back");
+      }
+    })();
+  } catch (error) {
+    console.error(error);
+    req.flash("error", "伺服器錯誤");
+    res.redirect("back");
   }
 });
 
-app.get("/todos/:id/edit", async (req, res) => {
+app.get("/todos/:id/edit", (req, res) => {
   try {
     const { id } = req.params;
-    const todo = await Todo.findByPk(id, { raw: true });
-    res.render("edit", { todo });
-  } catch {
-    res.status(422).json(err);
+    (async () => {
+      try {
+        const todo = await Todo.findByPk(id, { raw: true });
+        res.render("edit", { todo, error: req.flash("error") });
+      } catch (error) {
+        console.error(error);
+        req.flash("error", "資料取得失敗 :(");
+        res.redirect("back");
+      }
+    })();
+  } catch (error) {
+    console.error(error);
+    req.flash("error", "伺服器錯誤");
+    res.redirect("back");
   }
 });
 
-app.put("/todos/:id", async (req, res) => {
+app.put("/todos/:id", (req, res) => {
   try {
     const { id } = req.params;
     const { editedName: name, tickCheckbox: isComplete } = req.body;
-    await Todo.update(
-      { name, isComplete: isComplete === "done" },
-      { where: { id } }
-    );
-    req.flash("success", "更新成功!")
-    res.redirect(`/todos/${id}`);
-  } catch {
-    res.status(422).json(err);
+    (async () => {
+      try {
+        await Todo.update(
+          { name, isComplete: isComplete === "done" },
+          { where: { id } }
+        );
+        req.flash("success", "更新成功!");
+        res.redirect(`/todos/${id}`);
+      } catch (error) {
+        console.error(error);
+        req.flash("error", "更新失敗 :(");
+        res.redirect("back");
+      }
+    })();
+  } catch (error) {
+    console.error(error);
+    req.flash("error", "伺服器錯誤");
+    res.redirect("back");
   }
 });
 
-app.delete("/todos/:id", async (req, res) => {
+app.delete("/todos/:id", (req, res) => {
   try {
     const { id } = req.params;
-    await Todo.destroy({ where: { id } });
-    req.flash("success", "刪除成功")
-    res.redirect("/todos");
-  } catch {
-    res.status(422).json(err);
+    (async () => {
+      try {
+        await Todo.destroy({ where: { id } });
+        req.flash("success", "刪除成功");
+        res.redirect("/todos");
+      } catch (error) {
+        console.error(error);
+        req.flash("error", "刪除失敗!");
+        res.redirect("back");
+      }
+    })();
+  } catch (error) {
+    console.error(error);
+    req.flash("error", "伺服器錯誤");
+    res.redirect("back");
   }
 });
 
