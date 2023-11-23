@@ -10,6 +10,10 @@ const router = require("./routes"); // 引用路由器
 const messageHandler = require("./middlewares/message-handler");
 const errorHandler = require("./middlewares/error-handler");
 
+if (process.env.NODE_ENV === "development") {
+  require("dotenv").config();
+}
+
 app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
 app.set("views", "./views");
@@ -21,7 +25,7 @@ app.use(methodOverride("_method"));
 
 app.use(
   session({
-    secret: "ThisIsSecret",
+    secret: process.env.SESSION_SECRET,
     resave: "false",
     saveUninitialized: false,
   })
