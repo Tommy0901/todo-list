@@ -1,9 +1,4 @@
-{{#if message}}
-<div style="margin-bottom: 5px;">{{message}}</div>
-{{/if}}
-{{#if error}}
-<div style="margin-bottom: 5px;">{{error}}</div>
-{{/if}}
+{{> message}}
 <input type ="button" onclick="location.href='/todos/new'" value="Create New Task"></input>
 <p></p>
 <ul class="list-group">
