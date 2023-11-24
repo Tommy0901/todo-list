@@ -10,16 +10,19 @@ router.get("/", (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     try {
       const todos = await Todo.findAll({
-        raw: true,
         attributes: ["id", "name", "isComplete"],
+        offset: (page - 1) * displayNumber,
+        limit: displayNumber,
+        raw: true,
       });
-      const lastPage = Math.ceil(todos.length / displayNumber);
+      const { count } = await Todo.findAndCountAll();
+      const totalPage = Math.ceil(count / displayNumber);
       res.render("todos", {
-        todos: todos.slice((page - 1) * displayNumber, page * displayNumber),
+        todos,
         prev: page - 1 ? page - 1 : page,
-        next: page > lastPage - 1 ? page : page + 1,
+        next: page < totalPage ? page + 1 : page,
         page,
-        lastPage,
+        totalPage,
       });
     } catch (error) {
       error.error_msg = "資料取得失敗 :(";
