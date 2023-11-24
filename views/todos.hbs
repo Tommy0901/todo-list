@@ -16,3 +16,21 @@
       </li>
     {{/each}}
 </ul>
+<p></p>
+<div style="display: inline;margin-left: 22%;">
+<button onclick="location.href='/todos'">&lt;--</button>
+<form action="/todos" method="GET" style="display: inline;">
+  <input type="hidden" name="page" value="{{prev}}">
+  <button type="submit">&lt;</button>
+</form>
+<form action="/todos" method="GET" style="display: inline;">
+  <input type="hidden" name="page" value="{{next}}">
+  <button type="submit">&gt;</button>
+</form>
+<button onclick="location.href='/todos?page={{lastPage}}'">--&gt;</button>
+</div>
+<form action="/todos" method="GET" style="display: inline;margin-left: 13%;">
+  <span>Page:</span>
+  <input type="number" min="1" max="{{lastPage}}" name="page" value="{{page}}">
+  <span> / {{lastPage}}</span>
+</form>

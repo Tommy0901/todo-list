@@ -3,15 +3,24 @@ const router = express.Router();
 
 const models = require("../models");
 const Todo = models.Todo;
+const displayNumber = 20;
 
 router.get("/", (req, res, next) => {
   (async () => {
+    const page = parseInt(req.query.page) || 1;
     try {
       const todos = await Todo.findAll({
         raw: true,
         attributes: ["id", "name", "isComplete"],
       });
-      res.render("todos", { todos });
+      const lastPage = Math.ceil(todos.length / displayNumber);
+      res.render("todos", {
+        todos: todos.slice((page - 1) * displayNumber, page * displayNumber),
+        prev: page - 1 ? page - 1 : page,
+        next: page > lastPage - 1 ? page : page + 1,
+        page,
+        lastPage,
+      });
     } catch (error) {
       error.error_msg = "資料取得失敗 :(";
       next(error);
@@ -39,10 +48,11 @@ router.post("/", (req, res, next) => {
 
 router.get("/:id", (req, res, next) => {
   const { id } = req.params;
+  const page = Math.floor(id / displayNumber) + 1;
   (async () => {
     try {
       const todo = await Todo.findByPk(id, { raw: true });
-      res.render("todo", { todo });
+      res.render("todo", { todo, page });
     } catch (error) {
       error.error_msg = "資料取得失敗 :(";
       next(error);
@@ -52,10 +62,11 @@ router.get("/:id", (req, res, next) => {
 
 router.get("/:id/edit", (req, res, next) => {
   const { id } = req.params;
+  const page = Math.floor(id / displayNumber) + 1;
   (async () => {
     try {
       const todo = await Todo.findByPk(id, { raw: true });
-      res.render("edit", { todo });
+      res.render("edit", { todo, page });
     } catch (error) {
       error.error_msg = "資料取得失敗 :(";
       next(error);

@@ -2,7 +2,7 @@
   <input type="text" value="{{todo.name}}" name="editedName" id="" required> <!--加入 required 來避免使用者跳過輸入-->
   <input class="form-check-input" type="checkbox" name="tickCheckbox" id="" value="done" style="margin-left: 4px; width: 21px; height: 21px;" {{#if todo.isComplete}} checked {{/if}}>
   <button type="submit" style="margin-left: 4px;">Save</button>
-  <input type ="button" onclick="location.href='/todos'" value="back" id=""></input>
+  <input type ="button" onclick="location.href='/todos{{#if page}}?page={{page}}{{/if}}'" value="back" id=""></input>
 </form>
 <p></p>
 {{> message}}
