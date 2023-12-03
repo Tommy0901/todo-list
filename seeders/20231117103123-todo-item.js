@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
       "todos",
-      Array.from(Array(10)).map((_, i) => ({
+      Array.from(Array(600)).map((_, i) => ({
         name: `todo-${i + 1}`,
         createdAt: new Date(),
         updatedAt: new Date(),

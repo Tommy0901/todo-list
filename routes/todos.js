@@ -6,8 +6,8 @@ const Todo = models.Todo;
 const displayNumber = 20;
 
 router.get("/", (req, res, next) => {
+  const page = parseInt(req.query.page) || 1;
   (async () => {
-    const page = parseInt(req.query.page) || 1;
     try {
       const todos = await Todo.findAll({
         attributes: ["id", "name", "isComplete"],
