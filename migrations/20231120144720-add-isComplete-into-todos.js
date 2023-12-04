@@ -5,7 +5,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.addColumn(
       'Todos', // table name
-      'isComplete', // colimn name
+      'isComplete', // column name
       {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
@@ -17,7 +17,7 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     await queryInterface.removeColumn(
       'Todos', // table name
-      'isComplete', // colimn name
+      'isComplete', // column name
     )
   }
 };
