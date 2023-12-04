@@ -9,12 +9,37 @@ router.use("/users", users) // 設定 todos 路由模組
 
 router.get("/", (req, res) => {
   try {
-    res.render("index", { error: req.flash("error") });
+    res.render("index");
   } catch (error) {
     console.error(error);
-    req.flash("error", "伺服器錯誤");
+    res.send("伺服器錯誤 :(");
+  }
+});
+
+router.get("/login", (req, res) => {
+  try {
+    res.render("login");
+  } catch (error) {
+    console.error(error);
     res.redirect("back");
   }
 });
+
+router.get("/register", (req, res) => {
+  try {
+    res.render("register");
+  } catch (error) {
+    console.error(error);
+    res.redirect("back");
+  }
+});
+
+router.post('/login', (req, res) => {
+	return res.send(req.body)
+})
+
+router.post('/logout', (req, res) => {
+	return res.send('logout')
+})
 
 module.exports = router;

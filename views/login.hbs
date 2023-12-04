@@ -1,0 +1,30 @@
+<div class="mb-4">
+  <h3>Log in</h3>
+</div>
+{{> message}}
+<form action="/login" method="post" id="login-form" novalidate>
+  <div class="row mb-3">
+    <label for="email" class="col-sm-1 col-form-label" style="text-align: end;">Email:</label>
+    <div class="col-sm-2">
+      <input name="email" type="text" class="form-control" id="email" value="" required>
+      <div class="invalid-feedback">* enter your email</div>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="password" class="col-sm-1 col-form-label" style="text-align: end;">Password:</label>
+    <div class="col-sm-2">
+      <input name="password" type="password" class="form-control" id="password" value="" required>
+      <div class="invalid-feedback">* enter your password</div>
+    </div>
+  </div>
+  <div>
+    <input type="submit" value="submit"></input>
+  </div>
+</form>
+<p></p>
+<div>
+  <span class="me-2">No account?</span>
+  <input type ="button" onclick="location.href='/register'" value="Register"></input>
+</div>
+
+<script src="/javascripts/main.js"></script>
