@@ -35,10 +35,15 @@ passport.serializeUser((user, done) => {
   return done(null, { id, name, email });
 });
 
+passport.deserializeUser((user, done) => {
+  return done(null, { id: user.id });
+});
+
 const todos = require("./todos"); // 引入 todos 路由模組
 const users = require("./users"); // 引入 users 路由模組
+const authHandler = require("../middlewares/auth-handler");
 
-router.use("/todos", todos); // 設定 todos 路由模組
+router.use("/todos", authHandler, todos); // 設定 todos 路由模組
 router.use("/users", users); // 設定 todos 路由模組
 
 router.get("/", (req, res) => {
@@ -78,7 +83,9 @@ router.post(
 );
 
 router.post("/logout", (req, res) => {
-  res.redirect("login");
+  req.logout((error) => {
+    return error ? next(error) : res.redirect("/login");
+  });
 });
 
 module.exports = router;
