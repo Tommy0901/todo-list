@@ -13,7 +13,7 @@ module.exports = {
           key: "id", // column name
         },
         onDelete: "CASCADE",
-        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       }
     );
   },

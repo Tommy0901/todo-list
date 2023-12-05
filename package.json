@@ -4,9 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "setup-db": "node create-database.js && npx sequelize db:migrate && npx sequelize db:seed:all",
+    "start": "cross-env NODE_ENV=development node app.js",
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
+    "dbsetup": "node create-database.js && npx sequelize db:migrate && npx sequelize db:migrate:undo && npx sequelize db:seed:all && node create-user.js && npx sequelize db:migrate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -24,5 +24,8 @@
     "passport-local": "^1.0.0",
     "sequelize": "^6.30.0",
     "sequelize-cli": "^6.6.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
