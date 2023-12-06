@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router(); // 引入 Express 路由器
 
+const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
@@ -16,12 +17,14 @@ passport.use(
           where: { email: username },
           raw: true,
         });
-        return !user || user.password !== password
-          ? done(null, false, {
-              type: "error", // 此行可省略，因為 type 預設名稱即為 error
-              message: "email 或密碼錯誤",
-            })
-          : done(null, user);
+        return user
+          ? (await bcrypt.compare(password, user.password))
+            ? done(null, user)
+            : done(null, false, {
+                type: "error", // 此行可省略，因為 type 預設名稱即為 error
+                message: "email 或密碼錯誤",
+              })
+          : done(null, false, { message: "email 或密碼錯誤" });
       } catch (error) {
         error.errorMessage = "登入失敗 :(";
         done(error);

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const bcrypt = require("bcryptjs");
 const models = require("../models");
 const User = models.User;
 
@@ -36,7 +37,7 @@ router.post("/", (req, res) => {
         req.flash("error", "email 已註冊 :(");
         return res.redirect("back");
       }
-      await User.create({ email, name, password });
+      await User.create({ email, name, password: await bcrypt.hash(password, 10) });
       req.flash("success", "註冊成功!");
       return res.redirect("/login");
     } catch (error) {
