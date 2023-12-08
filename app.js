@@ -1,19 +1,20 @@
 const express = require("express");
 const session = require("express-session");
+const { engine } = require("express-handlebars");
 const flash = require("connect-flash");
 const methodOverride = require("method-override");
-const { engine } = require("express-handlebars");
 const app = express();
 const port = 3000;
-
-const passport = require("passport");
-const router = require("./routes"); // 引用路由器
-const messageHandler = require("./middlewares/message-handler");
-const errorHandler = require("./middlewares/error-handler");
 
 if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
 }
+
+const router = require("./routes"); // 引用路由器
+const passport = require("./config/passport");
+
+const messageHandler = require("./middlewares/message-handler");
+const errorHandler = require("./middlewares/error-handler");
 
 app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");

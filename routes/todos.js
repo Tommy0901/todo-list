@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const models = require("../models");
+const Todo = require("../models").Todo;
 const { Op } = require("sequelize");
 
-const Todo = models.Todo;
 const displayNumber = 20;
 
 router.get("/", (req, res, next) => {
@@ -19,7 +18,9 @@ router.get("/", (req, res, next) => {
         limit: displayNumber,
         raw: true,
       });
-      const totalPage = Math.ceil((await Todo.count({where:{userId}})) / displayNumber);
+      const totalPage = Math.ceil(
+        (await Todo.count({ where: { userId } })) / displayNumber
+      );
       res.render("todos", {
         todos,
         prev: page - 1 ? page - 1 : page,
@@ -43,7 +44,9 @@ router.post("/", (req, res, next) => {
   const { inputName: name } = req.body;
   (async () => {
     try {
-      const totalPage = Math.ceil((await Todo.count({where:{userId}})) / displayNumber);
+      const totalPage = Math.ceil(
+        (await Todo.count({ where: { userId } })) / displayNumber
+      );
       await Todo.create({ name, userId });
       req.flash("success", "新增成功!");
       res.redirect(`/todos?page=${totalPage}`);
@@ -59,7 +62,9 @@ router.get("/:id", (req, res, next) => {
   const { id: userId } = req.user;
   (async () => {
     try {
-      const totalPage = Math.ceil((await Todo.count({where:{userId}})) / displayNumber);
+      const totalPage = Math.ceil(
+        (await Todo.count({ where: { userId } })) / displayNumber
+      );
       const currentPage = Math.ceil(
         (await Todo.count({ where: { id: { [Op.lte]: id } } })) / displayNumber
       );
@@ -86,7 +91,9 @@ router.get("/:id/edit", (req, res, next) => {
   const { id: userId } = req.user;
   (async () => {
     try {
-      const totalPage = Math.ceil((await Todo.count({where:{userId}})) / displayNumber);
+      const totalPage = Math.ceil(
+        (await Todo.count({ where: { userId } })) / displayNumber
+      );
       const currentPage = Math.ceil(
         (await Todo.count({ where: { id: { [Op.lte]: id } } })) / displayNumber
       );
@@ -138,7 +145,9 @@ router.delete("/:id", (req, res, next) => {
   const { id: userId } = req.user;
   (async () => {
     try {
-      const totalPage = Math.ceil((await Todo.count({where:{userId}})) / displayNumber);
+      const totalPage = Math.ceil(
+        (await Todo.count({ where: { userId } })) / displayNumber
+      );
       const currentPage = Math.ceil(
         (await Todo.count({ where: { id: { [Op.lte]: id } } })) / displayNumber
       );
