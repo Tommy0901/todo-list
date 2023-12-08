@@ -4,9 +4,14 @@ const router = express.Router(); // 引入 Express 路由器
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const FacebookStrategy = require("passport-facebook");
 
 const models = require("../models");
 const User = models.User;
+
+if (process.env.NODE_ENV === "development") {
+  require("dotenv").config();
+}
 
 passport.use(
   new LocalStrategy({ usernameField: "email" }, (username, password, done) => {
@@ -31,6 +36,44 @@ passport.use(
       }
     })();
   })
+);
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+      profileFields: ["displayName", "email"],
+    },
+    (accessToken, refreshToken, profile, done) => {
+      const {value: email} = profile.emails[0];
+      const { displayName: name } = profile;
+      (async () => {
+        try {
+          const user = await User.findOne({
+            attributes: ["id", "name", "email"],
+            where: { email },
+            raw: true,
+          });
+          if (user) {
+            done(null, user);
+          } else {
+            const randomPwd = Math.random().toString(36).slice(-8);
+            const { id } = await User.create({
+              email,
+              name,
+              password: await bcrypt.hash(randomPwd, 10),
+            });
+            return done(null, { id, name, email });
+          }
+        } catch (error) {
+          error.errorMessage = "登入失敗 :(";
+          done(error);
+        }
+      })();
+    }
+  )
 );
 
 passport.serializeUser((user, done) => {
@@ -66,6 +109,20 @@ router.get("/login", (req, res) => {
     res.redirect("back");
   }
 });
+
+router.get(
+  "/login/facebook",
+  passport.authenticate("facebook", { scope: ["email"] })
+);
+
+router.get(
+  "/oauth2/redirect/facebook",
+  passport.authenticate("facebook", {
+    successRedirect: "/todos",
+    failureRedirect: "/login",
+    failureFlash: true,
+  })
+);
 
 router.get("/register", (req, res) => {
   try {
